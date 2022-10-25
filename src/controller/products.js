@@ -1,27 +1,57 @@
 const modelProduct = require("../model/products");
 
 const productsController = {
-  update: (req, res) => {
+  updateProduct: (req, res) => {
     modelProduct
-      .updateData(req.params.id_product, req.body)
-      .then(() => res.send({ status: 200, message: "Berhasil memasukan data" }))
+      .updateDataProduct(req.params.id_product, req.body)
+      .then(() =>
+        res.send({ status: 200, message: "Berhasil mengupdate data" })
+      )
       .catch((err) => res.send({ message: "error", err }));
   },
-  delete: (req, res) => {
+  deleteProduct: (req, res) => {
     modelProduct
-      .deleteData(req.params.id_product)
+      .deleteDataProduct(req.params.id_product)
       .then(() => res.send({ status: 200, message: "Berhasil menghapus data" }))
       .catch(() => res.send({ message: "error" }));
   },
-  getProducts: (_req, res) => {
+  getProducts: (req, res) => {
+    const { page } = req.query;
+    const { limit } = req.query;
+    const { sort } = req.query;
+    const { sortby } = req.query;
     modelProduct
-      .selectData()
+      .selectDataProduct(page, limit, sort, sortby)
+      .then((result) => {
+        res.json(result.rows);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
+  getProductsList: (req, res) => {
+    modelProduct
+      .listDataProduct()
       .then((result) => res.send({ result: result.rows }))
       .catch(() => res.send({ message: "error" }));
   },
-  insert: (req, res) => {
+  getProductSort: (req, res) => {
+    const { sort } = req.query;
     modelProduct
-      .insertData(req.body)
+      .sortDataProduct(sort)
+      .then((result) => res.send({ result: result.rows }))
+      .catch(() => res.send({ message: "error" }));
+  },
+  getProductSearch: (req, res) => {
+    const { search } = req.query;
+    modelProduct
+      .searchDataProduct(search)
+      .then((result) => res.send({ result: result.rows }))
+      .catch(() => res.send({ message: "error" }));
+  },
+  insertProduct: (req, res) => {
+    modelProduct
+      .insertDataProduct(req.body)
       .then(() => res.send({ status: 200, message: "Berhasil memasukan data" }))
       .catch(() => res.send({ message: "error" }));
   },

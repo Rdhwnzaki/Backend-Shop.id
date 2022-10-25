@@ -1,0 +1,326 @@
+{
+  "info": {
+    "_postman_id": "77adbed6-24ac-4f91-9146-e180939050fe",
+    "name": "shop.id",
+    "description": "StartFragment\n\n```\nThis is API documentation from Shop.Id\n\n```\n\nEndFragment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23454078"
+  },
+  "item": [
+    {
+      "name": "GET Product",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/products?sortby=id_product&sort=desc&page=1&limit=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["products"],
+          "query": [
+            {
+              "key": "sortby",
+              "value": "id_product"
+            },
+            {
+              "key": "sort",
+              "value": "desc"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Category",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/category",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["category"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Transaction",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/transaction",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transaction"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Product",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"id_product\": 13,\r\n            \"name_product\": \"Celana Katun\",\r\n            \"stock_product\": 25,\r\n            \"price_product\": 150000,\r\n            \"category_id\": 4\r\n        }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["products"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Category",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"id_category\": 5,\r\n            \"name_category\": \"Footwear\"\r\n        }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/category",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["category"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Transaction",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"id_transaction\": 2,\r\n            \"email_transaction\": \"wannn.rmz@gmail.com\",\r\n            \"product_id\": 1,\r\n            \"amount_transaction\": 1,\r\n            \"total_transaction\": 120000\r\n        }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/transaction",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transaction"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Product",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"name_product\": \"Celana Katun\",\r\n            \"stock_product\": 50,\r\n            \"price_product\": 150000,\r\n            \"category_id\": 4\r\n        }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/products/13",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["products", "13"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Category",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"name_category\": \"Sock\"\r\n        }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/category/5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["category", "5"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT Transaction",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n            \"email_transaction\": \"wannn.rmz@pijar.id\",\r\n            \"product_id\": 1,\r\n            \"amount_transaction\": 1,\r\n            \"total_transaction\": 120000\r\n        }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/transaction/2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transaction", "2"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/products/13",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["products", "13"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Category",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/category/5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["category", "5"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Transaction",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/transaction/2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transaction", "2"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -2,11 +2,13 @@ const express = require("express");
 
 const router = express.Router();
 const { categoryController } = require("../controller/category");
-const { handling } = require("../middleware/category");
+const { validate } = require("../helpers/category");
 
-router.get("/", categoryController.getCategory);
-router.post("/", handling, categoryController.insertCategory);
-router.put("/:id_category", categoryController.updateCategory);
-router.delete("/:id_category", categoryController.deleteCategory);
+router
+  .get("/", categoryController.getCategory)
+  .get("/:id_category", categoryController.getCategoryDetail)
+  .post("/", validate, categoryController.insertCategory)
+  .put("/:id_category", categoryController.updateCategory)
+  .delete("/:id_category", categoryController.deleteCategory);
 
 module.exports = router;

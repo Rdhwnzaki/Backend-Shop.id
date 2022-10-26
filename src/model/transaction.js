@@ -1,11 +1,22 @@
-/* eslint-disable camelcase */
 const Pool = require("../config/db");
 
 const selectTransaction = () => Pool.query("SELECT * FROM transaction");
 
+const selectDataTransactionbyId = (id) =>
+  new Promise((resolve, reject) => {
+    Pool.query(
+      `select * from transaction where id_transaction = '${id}' `,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+
 const insertTransaction = (dataTransaction) => {
   const {
-    id_transaction,
     email_transaction,
     product_id,
     amount_transaction,
@@ -13,7 +24,7 @@ const insertTransaction = (dataTransaction) => {
   } = dataTransaction;
 
   return Pool.query(
-    `INSERT INTO transaction(id_transaction,email_transaction,product_id,amount_transaction,total_transaction)VALUES(${id_transaction},'${email_transaction}','${product_id}','${amount_transaction}','${total_transaction}')`
+    `INSERT INTO transaction(email_transaction,product_id,amount_transaction,total_transaction)VALUES('${email_transaction}','${product_id}','${amount_transaction}','${total_transaction}')`
   );
 };
 const updateTransaction = (id_transaction, dataTransaction) => {
@@ -35,6 +46,7 @@ const deleteTransaction = (id_transaction) =>
 
 module.exports = {
   selectTransaction,
+  selectDataTransactionbyId,
   insertTransaction,
   deleteTransaction,
   updateTransaction,

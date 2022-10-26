@@ -1,59 +1,48 @@
 const modelProduct = require("../model/products");
+const { response } = require("../middleware/common");
+const { resp } = require("../middleware/common");
 
 const productsController = {
   updateProduct: (req, res) => {
     modelProduct
       .updateDataProduct(req.params.id_product, req.body)
-      .then(() =>
-        res.send({ status: 200, message: "Berhasil mengupdate data" })
-      )
-      .catch((err) => res.send({ message: "error", err }));
+      .then(() => resp(res, 200, true, "Update product success"))
+      .catch((err) => response(res, 404, false, err, "Update product failed"));
   },
   deleteProduct: (req, res) => {
     modelProduct
       .deleteDataProduct(req.params.id_product)
-      .then(() => res.send({ status: 200, message: "Berhasil menghapus data" }))
-      .catch(() => res.send({ message: "error" }));
+      .then(() => resp(res, 200, true, "Delete product success"))
+      .catch((err) => response(res, 404, false, err, "Delete product failed"));
   },
   getProducts: (req, res) => {
-    const { page } = req.query;
-    const { limit } = req.query;
-    const { sort } = req.query;
-    const { sortby } = req.query;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const sort = req.query.sort || "asc";
+    const sortby = req.query.sortby || "id_product";
+    const search = req.query.search || "";
     modelProduct
-      .selectDataProduct(page, limit, sort, sortby)
-      .then((result) => {
-        res.json(result.rows);
-      })
-      .catch((err) => {
-        res.json(err);
-      });
+      .selectDataProduct(page, limit, sort, sortby, search)
+      .then((result) =>
+        response(res, 200, true, result.rows, "Get product success")
+      )
+      .catch((err) => response(res, 404, false, err, "Get product failed"));
   },
-  getProductsList: (req, res) => {
+  getProductsDetail: (req, res) => {
     modelProduct
-      .listDataProduct()
-      .then((result) => res.send({ result: result.rows }))
-      .catch(() => res.send({ message: "error" }));
-  },
-  getProductSort: (req, res) => {
-    const { sort } = req.query;
-    modelProduct
-      .sortDataProduct(sort)
-      .then((result) => res.send({ result: result.rows }))
-      .catch(() => res.send({ message: "error" }));
-  },
-  getProductSearch: (req, res) => {
-    const { search } = req.query;
-    modelProduct
-      .searchDataProduct(search)
-      .then((result) => res.send({ result: result.rows }))
-      .catch(() => res.send({ message: "error" }));
+      .selectDataProductbyId(req.params.id_product)
+      .then((result) =>
+        response(res, 200, true, result.rows, "Get detail product success")
+      )
+      .catch((err) =>
+        response(res, 404, false, err, "Get detail product failed")
+      );
   },
   insertProduct: (req, res) => {
     modelProduct
       .insertDataProduct(req.body)
-      .then(() => res.send({ status: 200, message: "Berhasil memasukan data" }))
-      .catch(() => res.send({ message: "error" }));
+      .then(() => resp(res, 200, true, "Insert product success"))
+      .catch((err) => response(res, 404, false, err, "Insert product failed"));
   },
 };
 exports.productsController = productsController;

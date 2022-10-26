@@ -1,13 +1,25 @@
-/* eslint-disable camelcase */
 const Pool = require("../config/db");
 
 const selectCategory = () => Pool.query("SELECT * FROM category");
 
+const selectDataCategorybyId = (id) =>
+  new Promise((resolve, reject) => {
+    Pool.query(
+      `select * from category where id_category = '${id}' `,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+
 const insertCategory = (dataCategory) => {
-  const { id_category, name_category } = dataCategory;
+  const { name_category } = dataCategory;
 
   return Pool.query(
-    `INSERT INTO category(id_category, name_category)VALUES(${id_category},'${name_category}')`
+    `INSERT INTO category(name_category)VALUES('${name_category}')`
   );
 };
 const updateCategory = (id_category, dataCategory) => {
@@ -22,6 +34,7 @@ const deleteCategory = (id_category) =>
 
 module.exports = {
   selectCategory,
+  selectDataCategorybyId,
   insertCategory,
   deleteCategory,
   updateCategory,

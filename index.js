@@ -6,9 +6,8 @@ require("dotenv").config();
 const helmet = require("helmet");
 const xss = require("xss-clean");
 
-const productsRoutes = require("./src/routes/products");
-const categoryRoutes = require("./src/routes/category");
-const transactionRoutes = require("./src/routes/transaction");
+const mainRouter = require("./src/routes/index");
+const { resp } = require("./src/middleware/common");
 
 const app = express();
 const port = 3000;
@@ -19,10 +18,15 @@ app.use(helmet());
 app.use(xss());
 
 app.use(bodyParser.json());
-app.use("/products", productsRoutes);
-app.use("/category", categoryRoutes);
-app.use("/transaction", transactionRoutes);
+app.use("/", mainRouter);
+app.use("/img", express.static("./upload"));
 
+app.all("*", (req, res) => {
+  resp(res, 404, false, "404 Not Found");
+});
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "success", statusCode: 200 });
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

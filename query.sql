@@ -29,3 +29,14 @@ INNER JOIN category
 ON products.category_id = category.id_category;
 
 INSERT INTO transaction(id_transaction,email_transaction,product_id,amount_transaction,total_transaction,status) VALUES(1, 'zaki85.rmz@gmail.com', 1, 1, 120000, 1);
+
+CREATE TABLE users(
+    id_user VARCHAR PRIMARY KEY,
+    email_user VARCHAR NOT NULL,
+    password_user VARCHAR NOT NULL,
+    fullname_user VARCHAR,
+    role_user VARCHAR
+);
+
+ALTER TABLE products ADD photo_product VARCHAR(255);
+INSERT INTO users(id_user,email_user,password_user,fullname_user,role_user)VALUES('1','zaki@pijar.id','zaki123','ridhwan zaki','admin');

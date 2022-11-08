@@ -4,7 +4,7 @@ const { resp } = require("./common");
 const key = process.env.JWT_KEY;
 
 const role = (req, res, next) => {
-  if (req.params.role_user === "toko" || req.params.role_user === "custumer") {
+  if (req.params.role_user === "toko" || req.params.role_user === "custommer") {
     return next();
   }
   return resp(res, 404, false, "Wrong role user ");

@@ -10,12 +10,18 @@ const storage = multer.diskStorage({
     const uniq = Date.now() + Math.round(Math.random() * 1e9);
     cb(null, file.fieldname + "-" + uniq + ".png");
   },
-  // fileFilter: function (req, res, file, cb) {
-  //   if (file.mimetype === "png" && file.mimetype === "jpg") {
-  //     return resp(res, 404, false, "Update product success");
-  //   }
-  //   cb(null, true);
-  // },
 });
-const upload = multer({ storage });
+
+const upload = multer({
+  limits: { fileSize: 10 * 1024 ** 2 },
+  storage: storage,
+  fileFilter: (res, file, cb) => {
+    if (file.mimetype === "image/png" || file.mimetype === "image/jpg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Input file with png or jpg format"));
+    }
+  },
+});
 module.exports = upload;

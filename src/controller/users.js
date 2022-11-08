@@ -19,7 +19,7 @@ const userController = {
       email_user: req.body.email_user,
       password_user,
       fullname_user: req.body.fullname_user,
-      role_user: "toko",
+      role_user: req.params.role_user,
     };
     try {
       const result = await create(data);

@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const { productsController } = require("../controller/products");
-// const { validate } = require("../helpers/product");
+// const { validateRole } = require("../helpers/role");
 const { protect } = require("../middleware/auth");
 const upload = require("../middleware/upload");
 const { hitCache, clearCache } = require("../middleware/redis");
@@ -12,6 +12,7 @@ router
   .get("/:id_product", protect, hitCache, productsController.getProductsDetail)
   .post(
     "/",
+    // validateRole,
     protect,
     upload.single("photo_product"),
     productsController.insertProduct

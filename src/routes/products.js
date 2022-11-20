@@ -5,29 +5,29 @@ const { productsController } = require("../controller/products");
 // const { validateRole } = require("../helpers/role");
 const { protect } = require("../middleware/auth");
 const upload = require("../middleware/upload");
-const { hitCache, clearCache } = require("../middleware/redis");
+// const { hitCache, clearCache } = require("../middleware/redis");
 
 router
-  .get("/", protect, productsController.getProducts)
-  .get("/:id_product", protect, hitCache, productsController.getProductsDetail)
+  .get("/", productsController.getProducts)
+  .get("/:id_product", productsController.getProductsDetail)
   .post(
     "/",
     // validateRole,
-    protect,
+    // protect,
     upload.single("photo_product"),
     productsController.insertProduct
   )
   .put(
     "/:id_product",
-    protect,
+    // protect,
     upload.single("photo_product"),
-    clearCache,
+    
     productsController.updateProduct
   )
   .delete(
     "/:id_product",
-    protect,
-    clearCache,
+    // protect,
+  
     productsController.deleteProduct
   );
 

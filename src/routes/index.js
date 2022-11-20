@@ -11,5 +11,4 @@ router
   .use("/category", categoryRoutes)
   .use("/transaction", transactionRoutes)
   .use("/users", userRoutes);
-
 module.exports = router;

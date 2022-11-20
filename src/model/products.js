@@ -4,7 +4,7 @@ const selectDataProduct = (page, limit, sort, sortby, search) =>
   new Promise((resolve, reject) => {
     const offset = (page - 1) * limit;
     Pool.query(
-      `select products.name_product,products.stock_product,products.price_product,category.name_category as category,products.photo_product
+      `select products.id_product,products.name_product,products.stock_product,products.price_product,category.name_category as category,products.photo_product
       FROM products
       INNER JOIN category
       ON products.category_id = category.id_category where (name_product) ilike '%${search}%' order by ${sortby} ${sort} limit ${limit} offset ${offset} `,

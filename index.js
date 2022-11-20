@@ -14,7 +14,12 @@ const port = 3000;
 
 app.use(cors());
 app.use(morgan("dev"));
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
+  })
+);
 app.use(xss());
 
 app.use(bodyParser.json());

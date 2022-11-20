@@ -1,28 +1,30 @@
-const { createClient } = require("redis");
+// const { createClient } = require("redis");
 const modelProduct = require("../model/products");
 const { response } = require("../middleware/common");
 const { resp } = require("../middleware/common");
+const cloudinary = require("../config/photo")
 
-const client = createClient(6379);
+// const client = createClient(6379);
 
-client.on("error", (err) => console.log("Redis Client Error", err));
+// client.on("error", (err) => console.log("Redis Client Error", err));
 
-client.connect();
+// client.connect();
 
 const productsController = {
-  updateProduct: (req, res) => {
-    const port = process.env.PORT;
-    const host = process.env.HOST;
-    const photo_product = req.file.filename;
-    const uri = `http://${host}:${port}/img/${photo_product}`;
-    req.body.photo_product = uri;
-    req.body.stock_product = parseInt(req.body.stock_product);
-    req.body.price_product = parseInt(req.body.price_product);
-    req.body.category_id = parseInt(req.body.category_id);
-    modelProduct
-      .updateDataProduct(req.params.id_product, req.body)
-      .then(() => resp(res, 200, true, "Update product success"))
-      .catch((err) => response(res, 404, false, err, "Update product failed"));
+  updateProduct: async(req, res) => {
+    try{
+      req.body.stock_product = parseInt(req.body.stock_product)
+      req.body.price_product = parseInt(req.body.price_product)
+      req.body.category_id = parseInt(req.body.category_id)
+
+    const image = await cloudinary.uploader.upload(req.file.path, { folder: 'shop.id' })
+
+    req.body.photo_product = image.url
+    await modelProduct.updateDataProduct(req.params.id_product, req.body)
+    return response(res, 200, true, req.body, "Update Data Success")
+  } catch (err){
+    return response(res, 404, false, err, "Update Data Fail")
+  }
   },
   deleteProduct: (req, res) => {
     modelProduct
@@ -58,19 +60,20 @@ const productsController = {
         response(res, 404, false, err, "Get detail product failed")
       );
   },
-  insertProduct: (req, res) => {
-    const port = process.env.PORT;
-    const host = process.env.HOST;
-    const photo_product = req.file.filename;
-    const uri = `http://${host}:${port}/img/${photo_product}`;
-    req.body.photo_product = uri;
-    req.body.stock_product = parseInt(req.body.stock_product);
-    req.body.price_product = parseInt(req.body.price_product);
-    req.body.category_id = parseInt(req.body.category_id);
-    modelProduct
-      .insertDataProduct(req.body)
-      .then(() => resp(res, 200, true, "Insert product success"))
-      .catch((err) => response(res, 404, false, err, "Insert product failed"));
+  insertProduct: async(req, res) => {
+    try{
+      req.body.stock_product = parseInt(req.body.stock_product)
+      req.body.price_product = parseInt(req.body.price_product)
+      req.body.category_id = parseInt(req.body.category_id)
+
+    const image = await cloudinary.uploader.upload(req.file.path, { folder: 'shop.id' })
+
+    req.body.photo_product = image.url
+    await modelProduct.insertDataProduct(req.body)
+    return response(res, 200, true, req.body, "Input Data Success")
+  } catch (err){
+    return response(res, 404, false, err, "Input Data Fail")
+  }
   },
 };
 exports.productsController = productsController;

@@ -9,7 +9,8 @@ const upload = require("../middleware/upload");
 
 router
   .get("/", productsController.getProducts)
-  .get("/:id_product", productsController.getProductsDetail)
+  .get("/detail/:id_product", productsController.getProductsDetail)
+  .get("/category/:category_id", productsController.getProductsByCategory)
   .post(
     "/",
     // validateRole,
@@ -21,13 +22,13 @@ router
     "/:id_product",
     // protect,
     upload.single("photo_product"),
-    
+
     productsController.updateProduct
   )
   .delete(
     "/:id_product",
     // protect,
-  
+
     productsController.deleteProduct
   );
 

@@ -16,16 +16,16 @@ const selectDataCategorybyId = (id) =>
   });
 
 const insertCategory = (dataCategory) => {
-  const { name_category } = dataCategory;
+  const { name_category, photo_category } = dataCategory;
 
   return Pool.query(
-    `INSERT INTO category(name_category)VALUES('${name_category}')`
+    `INSERT INTO category(name_category,photo_category)VALUES('${name_category}','${photo_category}')`
   );
 };
 const updateCategory = (id_category, dataCategory) => {
-  const { name_category } = dataCategory;
+  const { name_category, photo_category } = dataCategory;
   return Pool.query(
-    `UPDATE category SET name_category='${name_category}' WHERE id_category='${id_category}'`
+    `UPDATE category SET name_category='${name_category}',photo_category='${photo_category}' WHERE id_category='${id_category}'`
   );
 };
 

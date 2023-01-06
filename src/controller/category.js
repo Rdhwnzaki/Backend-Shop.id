@@ -1,9 +1,15 @@
 const modelCategory = require("../model/category");
 const { response } = require("../middleware/common");
 const { resp } = require("../middleware/common");
+const cloudinary = require("../config/photo");
 
 const categoryController = {
-  updateCategory: (req, res) => {
+  updateCategory: async (req, res) => {
+    const image = await cloudinary.uploader.upload(req.file.path, {
+      folder: "shop.id",
+    });
+
+    req.body.photo_category = image.url;
     modelCategory
       .updateCategory(req.params.id_category, req.body)
       .then(() => resp(res, 200, true, "Update category success"))
@@ -33,7 +39,12 @@ const categoryController = {
         response(res, 404, false, err, "Get detail category failed")
       );
   },
-  insertCategory: (req, res) => {
+  insertCategory: async (req, res) => {
+    const image = await cloudinary.uploader.upload(req.file.path, {
+      folder: "shop.id",
+    });
+
+    req.body.photo_category = image.url;
     modelCategory
       .insertCategory(req.body)
       .then(() => resp(res, 200, true, "Insert category success"))

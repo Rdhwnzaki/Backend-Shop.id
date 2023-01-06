@@ -2,7 +2,7 @@
 const modelProduct = require("../model/products");
 const { response } = require("../middleware/common");
 const { resp } = require("../middleware/common");
-const cloudinary = require("../config/photo")
+const cloudinary = require("../config/photo");
 
 // const client = createClient(6379);
 
@@ -11,20 +11,22 @@ const cloudinary = require("../config/photo")
 // client.connect();
 
 const productsController = {
-  updateProduct: async(req, res) => {
-    try{
-      req.body.stock_product = parseInt(req.body.stock_product)
-      req.body.price_product = parseInt(req.body.price_product)
-      req.body.category_id = parseInt(req.body.category_id)
+  updateProduct: async (req, res) => {
+    try {
+      req.body.stock_product = parseInt(req.body.stock_product);
+      req.body.price_product = parseInt(req.body.price_product);
+      req.body.category_id = parseInt(req.body.category_id);
 
-    const image = await cloudinary.uploader.upload(req.file.path, { folder: 'shop.id' })
+      const image = await cloudinary.uploader.upload(req.file.path, {
+        folder: "shop.id",
+      });
 
-    req.body.photo_product = image.url
-    await modelProduct.updateDataProduct(req.params.id_product, req.body)
-    return response(res, 200, true, req.body, "Update Data Success")
-  } catch (err){
-    return response(res, 404, false, err, "Update Data Fail")
-  }
+      req.body.photo_product = image.url;
+      await modelProduct.updateDataProduct(req.params.id_product, req.body);
+      return response(res, 200, true, req.body, "Update Data Success");
+    } catch (err) {
+      return response(res, 404, false, err, "Update Data Fail");
+    }
   },
   deleteProduct: (req, res) => {
     modelProduct
@@ -45,35 +47,44 @@ const productsController = {
       )
       .catch((err) => response(res, 404, false, err, "Get product failed"));
   },
-  getProductsDetail: (req, res) => {
-    modelProduct
-      .selectDataProductbyId(req.params.id_product)
-      .then((result) => {
-        client.setEx(
-          `product/${req.params.id_product}`,
-          60 * 60,
-          JSON.stringify(result.rows)
-        );
-        response(res, 200, true, result.rows, "Get detail product success");
-      })
-      .catch((err) =>
-        response(res, 404, false, err, "Get detail product failed")
+  getProductsDetail: async (req, res) => {
+    try {
+      const result = await modelProduct.selectDataProductbyId(
+        req.params.id_product
       );
+      response(res, 200, true, result.rows, "get product success");
+    } catch (error) {
+      console.log(error);
+      response(res, 404, false, "get product failed");
+    }
   },
-  insertProduct: async(req, res) => {
-    try{
-      req.body.stock_product = parseInt(req.body.stock_product)
-      req.body.price_product = parseInt(req.body.price_product)
-      req.body.category_id = parseInt(req.body.category_id)
+  getProductsByCategory: async (req, res) => {
+    try {
+      const result = await modelProduct.selectDataProductbyCategory(
+        req.params.category_id
+      );
+      response(res, 200, true, result.rows, "get product by category success");
+    } catch (error) {
+      console.log(error);
+      response(res, 404, false, "get product by category failed");
+    }
+  },
+  insertProduct: async (req, res) => {
+    try {
+      req.body.stock_product = parseInt(req.body.stock_product);
+      req.body.price_product = parseInt(req.body.price_product);
+      req.body.category_id = parseInt(req.body.category_id);
 
-    const image = await cloudinary.uploader.upload(req.file.path, { folder: 'shop.id' })
+      const image = await cloudinary.uploader.upload(req.file.path, {
+        folder: "shop.id",
+      });
 
-    req.body.photo_product = image.url
-    await modelProduct.insertDataProduct(req.body)
-    return response(res, 200, true, req.body, "Input Data Success")
-  } catch (err){
-    return response(res, 404, false, err, "Input Data Fail")
-  }
+      req.body.photo_product = image.url;
+      await modelProduct.insertDataProduct(req.body);
+      return response(res, 200, true, req.body, "Input Data Success");
+    } catch (err) {
+      return response(res, 404, false, err, "Input Data Fail");
+    }
   },
 };
 exports.productsController = productsController;

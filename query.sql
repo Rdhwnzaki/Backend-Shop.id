@@ -42,3 +42,13 @@ ALTER TABLE products ADD photo_product VARCHAR(255);
 INSERT INTO users(id_user,email_user,password_user,fullname_user,role_user)VALUES('1','zaki@pijar.id','zaki123','ridhwan zaki','admin');
 ALTER TABLE users ADD verif INT;
 ALTER TABLE users ADD otp VARCHAR(32);
+CREATE TABLE status(
+    id_status SERIAL PRIMARY KEY,
+    name_status VARCHAR NOT NULL
+);
+ALTER TABLE users ADD photo_user VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users ADD phone_user INT DEFAULT NULL;
+ALTER TABLE users ADD gender_user VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users ADD date_user DATE DEFAULT NULL;
+ALTER TABLE users ADD store_name VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users ADD store_description VARCHAR(255) DEFAULT NULL;

@@ -148,14 +148,6 @@ const userController = {
         req.body;
       const { id_user } = req.payload;
       console.log(id_user);
-      const photo_user = req.file?.path || null;
-      let image;
-
-      if (photo_user) {
-        image = await cloudinary.uploader.upload(photo_user, {
-          folder: "shop.id",
-        });
-      }
 
       const {
         rows: [users],
@@ -171,7 +163,6 @@ const userController = {
           phone_user: phone_user || null,
           gender_user: gender_user || null,
           date_user: date_user || null,
-          photo_user: image?.url,
         };
 
         await updateProfile(dataProfile);

@@ -1,12 +1,20 @@
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
-const { create, findEmail, verification } = require("../model/users");
+const {
+  create,
+  findEmail,
+  verification,
+  updateProfile,
+  findUsers,
+} = require("../model/users");
 const { resp, response } = require("../middleware/common");
 const { generateToken, generateRefreshToken } = require("../helpers/auth");
 const email = require("../middleware/email");
+const modelUsers = require("../model/users");
 
 const Port = process.env.PORT;
 const Host = process.env.HOST;
+const cloudinary = require("../config/photo");
 
 const userController = {
   insertUsers: async (req, res) => {
@@ -75,6 +83,8 @@ const userController = {
     delete users.verif;
 
     const payload = {
+      id_user: users.id_user,
+      fullname_user: users.fullname_user,
       email_user: users.email_user,
       role_user: users.role_user,
     };
@@ -122,24 +132,54 @@ const userController = {
       " wrong otp please check your email"
     );
   },
-  profile: async (req, res, next) => {
+  getUser: async (req, res) => {
     try {
+      const id = req.payload.id_user;
+      console.log(id);
+      const result = await modelUsers.getUserById(id);
+      response(res, 200, true, result.rows, "Success Get User By Token");
+    } catch (error) {
+      response(res, 400, false, error, "Get User By Token Fail");
+    }
+  },
+  editProfile: async (req, res) => {
+    try {
+      const { fullname_user, email_user, phone_user, gender_user, date_user } =
+        req.body;
       const { id_user } = req.payload;
+      console.log(id_user);
+      const photo_user = req.file?.path || null;
+      let image;
+
+      if (photo_user) {
+        image = await cloudinary.uploader.upload(photo_user, {
+          folder: "shop.id",
+        });
+      }
+
       const {
         rows: [users],
       } = await findUsers(id_user);
 
-      if (users.role === "toko") {
-        const result = await profileToko(id_user);
-        response(res, 200, true, result.rows, "Get user toko success");
-      } else if (users.role === "custommer") {
-        const result = await profileCustommer(id_user);
-        response(res, 200, true, result.rows, "Get user custommer success");
+      if (!users) {
+        response(res, 404, false, null, "User tidak ditemukan");
       } else {
-        response(res, 404, false, null, "Role not found");
+        const dataProfile = {
+          id_user,
+          fullname_user: fullname_user || null,
+          email_user: email_user || null,
+          phone_user: phone_user || null,
+          gender_user: gender_user || null,
+          date_user: date_user || null,
+          photo_user: image?.url,
+        };
+
+        await updateProfile(dataProfile);
+        response(res, 200, true, dataProfile, "update data success");
       }
     } catch (error) {
-      response(res, 404, error, "Data not found");
+      console.log(error);
+      response(res, 404, false, "update data failed");
     }
   },
 };

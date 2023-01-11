@@ -4,28 +4,21 @@ const { response } = require("../middleware/common");
 const { resp } = require("../middleware/common");
 const cloudinary = require("../config/photo");
 
-// const client = createClient(6379);
-
-// client.on("error", (err) => console.log("Redis Client Error", err));
-
-// client.connect();
-
 const productsController = {
   updateProduct: async (req, res) => {
     try {
       req.body.stock_product = parseInt(req.body.stock_product);
       req.body.price_product = parseInt(req.body.price_product);
       req.body.category_id = parseInt(req.body.category_id);
-
-      const image = await cloudinary.uploader.upload(req.file.path, {
-        folder: "shop.id",
-      });
-
-      req.body.photo_product = image.url;
+      const {
+        photo_product: [photo_product],
+      } = req.files;
+      req.body.photo_product = photo_product.path;
       await modelProduct.updateDataProduct(req.params.id_product, req.body);
-      return response(res, 200, true, req.body, "Update Data Success");
+      return response(res, 200, true, req.body, "Input Data Success");
     } catch (err) {
-      return response(res, 404, false, err, "Update Data Fail");
+      console.log(err);
+      return response(res, 404, false, err, "Input Data Fail");
     }
   },
   deleteProduct: (req, res) => {
@@ -71,20 +64,89 @@ const productsController = {
   },
   insertProduct: async (req, res) => {
     try {
+      const user_id = req.payload.id_user;
+      console.log("id_user", user_id);
+
       req.body.stock_product = parseInt(req.body.stock_product);
       req.body.price_product = parseInt(req.body.price_product);
       req.body.category_id = parseInt(req.body.category_id);
 
-      const image = await cloudinary.uploader.upload(req.file.path, {
-        folder: "shop.id",
-      });
+      // const image = await cloudinary.uploader.upload(req.file.path, {
+      //   folder: "shop.id",
+      // });
 
-      req.body.photo_product = image.url;
-      await modelProduct.insertDataProduct(req.body);
+      // req.body.photo_product = image.url;
+      const {
+        photo_product: [photo_product],
+      } = req.files;
+      req.body.photo_product = photo_product.path;
+      await modelProduct.insertDataProduct(user_id, req.body);
       return response(res, 200, true, req.body, "Input Data Success");
     } catch (err) {
+      console.log(err);
       return response(res, 404, false, err, "Input Data Fail");
     }
+  },
+  getProductUser: async (req, res) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const sort = req.query.sort || "asc";
+    const sortby = req.query.sortby || "id_product";
+    const search = req.query.search || "";
+    try {
+      const user_id = req.payload.id_user;
+      console.log("id_user", user_id);
+      const result = await modelProduct.getProductByUser(
+        user_id,
+        page,
+        limit,
+        sort,
+        sortby,
+        search
+      );
+
+      response(res, 200, true, result.rows, "Success Get Product By user");
+    } catch (error) {
+      response(res, 400, false, error, "Get Product By User Failed");
+    }
+  },
+  getProductArchived: async (req, res) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const sort = req.query.sort || "asc";
+    const sortby = req.query.sortby || "id_product";
+    const search = req.query.search || "";
+    try {
+      const user_id = req.payload.id_user;
+      console.log("id_user", user_id);
+      const result = await modelProduct.getProductByArchived(
+        user_id,
+        page,
+        limit,
+        sort,
+        sortby,
+        search
+      );
+      response(res, 200, true, result.rows, "Success Get Product By user");
+    } catch (error) {
+      response(res, 400, false, error, "Get Product By User Failed");
+    }
+  },
+  setProductArchived: (req, res) => {
+    modelProduct
+      .archivedDataProduct(req.params.id_product)
+      .then(() => resp(res, 200, true, "Archived product success"))
+      .catch((err) =>
+        response(res, 404, false, err, "Archived product failed")
+      );
+  },
+  setProductActivated: (req, res) => {
+    modelProduct
+      .activatedDataProduct(req.params.id_product)
+      .then(() => resp(res, 200, true, "Archived product success"))
+      .catch((err) =>
+        response(res, 404, false, err, "Archived product failed")
+      );
   },
 };
 exports.productsController = productsController;

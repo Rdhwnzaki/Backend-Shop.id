@@ -19,13 +19,15 @@ const transactionController = {
         response(res, 404, false, err, "Delete transaction failed")
       );
   },
-  getTransaction: (_req, res) => {
-    modelTransaction
-      .selectTransaction()
-      .then((result) =>
-        response(res, 200, true, result.rows, "Get transaction success")
-      )
-      .catch((err) => response(res, 404, false, err, "Get transaction failed"));
+  getTransactionByUser: async (req, res) => {
+    try {
+      const user_id = req.payload.id_user;
+      console.log("id user", user_id);
+      const result = await modelTransaction.selectTransactionByUser(user_id);
+      response(res, 200, true, result.rows, "Get transaction success");
+    } catch (err) {
+      response(res, 404, false, err, "Get transaction fail");
+    }
   },
   getTransactionDetail: (req, res) => {
     modelTransaction
@@ -37,13 +39,20 @@ const transactionController = {
         response(res, 404, false, err, "Get detail transaction failed")
       );
   },
-  insertTransaction: (req, res) => {
-    modelTransaction
-      .insertTransaction(req.body)
-      .then(() => resp(res, 200, true, "Insert transaction success"))
-      .catch((err) =>
-        response(res, 404, false, err, "Insert transaction failed")
-      );
+  insertTransaction: async (req, res) => {
+    try {
+      const user_id = req.payload.id_user;
+      console.log("id user", user_id);
+
+      req.body.product_id = parseInt(req.body.product_id);
+      req.body.qty_transaction = parseInt(req.body.qty_transaction);
+      req.body.total_transaction = parseInt(req.body.total_transaction);
+      await modelTransaction.insertTransaction(user_id, req.body);
+      return response(res, 200, true, req.body, "Input transaction success");
+    } catch (err) {
+      console.log(err);
+      return response(res, 404, false, err, "Input transaction fail");
+    }
   },
 };
 exports.transactionController = transactionController;

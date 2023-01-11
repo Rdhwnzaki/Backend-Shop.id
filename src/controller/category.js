@@ -5,15 +5,17 @@ const cloudinary = require("../config/photo");
 
 const categoryController = {
   updateCategory: async (req, res) => {
-    const image = await cloudinary.uploader.upload(req.file.path, {
-      folder: "shop.id",
-    });
-
-    req.body.photo_category = image.url;
-    modelCategory
-      .updateCategory(req.params.id_category, req.body)
-      .then(() => resp(res, 200, true, "Update category success"))
-      .catch((err) => response(res, 404, false, err, "Update category failed"));
+    try {
+      const {
+        photo_category: [photo_category],
+      } = req.files;
+      req.body.photo_category = photo_category.path;
+      await modelCategory.updateCategory(req.params.id_category, req.body);
+      return response(res, 200, true, req.body, "Input Data Success");
+    } catch (err) {
+      console.log(err);
+      return response(res, 404, false, err, "Input Data Fail");
+    }
   },
   deleteCategory: (req, res) => {
     modelCategory
@@ -40,15 +42,17 @@ const categoryController = {
       );
   },
   insertCategory: async (req, res) => {
-    const image = await cloudinary.uploader.upload(req.file.path, {
-      folder: "shop.id",
-    });
-
-    req.body.photo_category = image.url;
-    modelCategory
-      .insertCategory(req.body)
-      .then(() => resp(res, 200, true, "Insert category success"))
-      .catch((err) => response(res, 404, false, err, "Insert category failed"));
+    try {
+      const {
+        photo_category: [photo_category],
+      } = req.files;
+      req.body.photo_category = photo_category.path;
+      await modelCategory.insertCategory(req.body);
+      return response(res, 200, true, req.body, "Input Data Success");
+    } catch (err) {
+      console.log(err);
+      return response(res, 404, false, err, "Input Data Fail");
+    }
   },
 };
 exports.categoryController = categoryController;

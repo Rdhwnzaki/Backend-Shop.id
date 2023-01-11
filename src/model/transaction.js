@@ -1,6 +1,9 @@
 const Pool = require("../config/db");
 
-const selectTransaction = () => Pool.query("SELECT * FROM transaction");
+const selectTransactionByUser = (user_id) =>
+  Pool.query(
+    `SELECT transaction.id_transaction,transaction.product_id,transaction.qty_transaction,transaction.total_transaction,transaction.user_id,transaction.seller_id,products.name_product,products.photo_product,products.brand_product,products.price_product FROM transaction INNER JOIN products ON transaction.product_id=products.id_product WHERE transaction.user_id='${user_id}'`
+  );
 
 const selectDataTransactionbyId = (id) =>
   new Promise((resolve, reject) => {
@@ -15,16 +18,12 @@ const selectDataTransactionbyId = (id) =>
     );
   });
 
-const insertTransaction = (dataTransaction) => {
-  const {
-    email_transaction,
-    product_id,
-    amount_transaction,
-    total_transaction,
-  } = dataTransaction;
+const insertTransaction = (user_id, dataTransaction) => {
+  const { product_id, qty_transaction, total_transaction, seller_id } =
+    dataTransaction;
 
   return Pool.query(
-    `INSERT INTO transaction(email_transaction,product_id,amount_transaction,total_transaction)VALUES('${email_transaction}','${product_id}','${amount_transaction}','${total_transaction}')`
+    `INSERT INTO transaction(product_id,qty_transaction,total_transaction,user_id,seller_id)VALUES(${product_id},${qty_transaction},${total_transaction},'${user_id}','${seller_id}')`
   );
 };
 const updateTransaction = (id_transaction, dataTransaction) => {
@@ -45,7 +44,7 @@ const deleteTransaction = (id_transaction) =>
   );
 
 module.exports = {
-  selectTransaction,
+  selectTransactionByUser,
   selectDataTransactionbyId,
   insertTransaction,
   deleteTransaction,

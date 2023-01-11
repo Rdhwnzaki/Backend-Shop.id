@@ -6,6 +6,7 @@ const {
   verification,
   updateProfile,
   findUsers,
+  updateProfileSeller,
 } = require("../model/users");
 const { resp, response } = require("../middleware/common");
 const { generateToken, generateRefreshToken } = require("../helpers/auth");
@@ -167,6 +168,50 @@ const userController = {
 
         await updateProfile(dataProfile);
         response(res, 200, true, dataProfile, "update data success");
+      }
+    } catch (error) {
+      console.log(error);
+      response(res, 404, false, "update data failed");
+    }
+  },
+  putPhoto: async (req, res) => {
+    try {
+      const id_user = req.payload.id_user;
+      console.log("id", id_user);
+      const {
+        photo_user: [photo_user],
+      } = req.files;
+      req.body.photo_user = photo_user.path;
+      await modelUsers.updatePhoto(id_user, req.body);
+      return response(res, 200, true, req.body, "Update Photo Success");
+    } catch (err) {
+      return response(res, 404, false, err, "Update Photo Fail");
+    }
+  },
+  editProfileSeller: async (req, res) => {
+    try {
+      const { store_name, email_user, phone_user, store_description } =
+        req.body;
+      const { id_user } = req.payload;
+      console.log(id_user);
+
+      const {
+        rows: [users],
+      } = await findUsers(id_user);
+
+      if (!users) {
+        response(res, 404, false, null, "User tidak ditemukan");
+      } else {
+        const dataProfileSeller = {
+          id_user,
+          store_name: store_name || null,
+          email_user: email_user || null,
+          phone_user: phone_user || null,
+          store_description: store_description || null,
+        };
+
+        await updateProfileSeller(dataProfileSeller);
+        response(res, 200, true, dataProfileSeller, "update data success");
       }
     } catch (error) {
       console.log(error);

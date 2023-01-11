@@ -20,7 +20,7 @@ const selectDataProduct = (page, limit, sort, sortby, search) =>
 const selectDataProductbyId = (id) =>
   new Promise((resolve, reject) => {
     Pool.query(
-      `select products.name_product,products.stock_product,products.price_product,products.brand_product,products.description_product,category.name_category as category,products.photo_product
+      `select products.id_product,products.name_product,products.stock_product,products.price_product,products.brand_product,products.description_product,products.user_id,category.name_category as category,products.photo_product
       FROM products
       INNER JOIN category
       ON products.category_id = category.id_category where id_product = '${id}' `,
@@ -38,7 +38,7 @@ const selectDataProductbyCategory = (id) =>
       `select products.id_product,products.name_product,products.stock_product,products.price_product,products.brand_product,products.description_product,category.name_category as category,products.photo_product
       FROM products
       INNER JOIN category
-      ON products.category_id = category.id_category where category_id = '${id}' `,
+      ON products.category_id = category.id_category where category_id = '${id}' AND archived=0 `,
       (err, res) => {
         if (err) {
           reject(err);
@@ -47,7 +47,7 @@ const selectDataProductbyCategory = (id) =>
       }
     );
   });
-const insertDataProduct = (dataProducts) => {
+const insertDataProduct = (user_id, dataProducts) => {
   const {
     name_product,
     stock_product,
@@ -56,10 +56,11 @@ const insertDataProduct = (dataProducts) => {
     photo_product,
     brand_product,
     description_product,
+    archived,
   } = dataProducts;
 
   return Pool.query(
-    `INSERT INTO products(name_product, stock_product, price_product,category_id,photo_product,brand_product,description_product)VALUES('${name_product}',${stock_product},${price_product},${category_id},'${photo_product}','${brand_product}','${description_product}')`
+    `INSERT INTO products(name_product, stock_product, price_product,category_id,photo_product,brand_product,description_product,user_id,archived)VALUES('${name_product}',${stock_product},${price_product},${category_id},'${photo_product}','${brand_product}','${description_product}','${user_id}',0)`
   );
 };
 const updateDataProduct = (id_product, dataProducts) => {
@@ -80,6 +81,44 @@ const updateDataProduct = (id_product, dataProducts) => {
 const deleteDataProduct = (id_product) =>
   Pool.query(`DELETE FROM products where id_product='${id_product}'`);
 
+const getProductByUser = (user_id, page, limit, sort, sortby, search) =>
+  new Promise((resolve, reject) => {
+    const offset = (page - 1) * limit;
+    Pool.query(
+      `select products.id_product,products.name_product,products.stock_product,products.price_product,products.brand_product,products.description_product,category.name_category as category,products.photo_product
+      FROM products
+      INNER JOIN category
+      ON products.category_id = category.id_category WHERE user_id = '${user_id}' AND (name_product) ilike '%${search}%' order by ${sortby} ${sort} limit ${limit} offset ${offset}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+
+const getProductByArchived = (user_id, page, limit, sort, sortby, search) =>
+  new Promise((resolve, reject) => {
+    const offset = (page - 1) * limit;
+    Pool.query(
+      `select products.id_product,products.name_product,products.stock_product,products.price_product,products.brand_product,products.description_product,category.name_category as category,products.photo_product
+      FROM products
+      INNER JOIN category
+      ON products.category_id = category.id_category WHERE user_id = '${user_id}' AND archived=1 AND (name_product) ilike '%${search}%' order by ${sortby} ${sort} limit ${limit} offset ${offset}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+const archivedDataProduct = (id_product) =>
+  Pool.query(`UPDATE products SET archived=1 where id_product='${id_product}'`);
+
+const activatedDataProduct = (id_product) =>
+  Pool.query(`UPDATE products SET archived=0 where id_product='${id_product}'`);
 module.exports = {
   selectDataProduct,
   selectDataProductbyId,
@@ -87,4 +126,8 @@ module.exports = {
   deleteDataProduct,
   updateDataProduct,
   selectDataProductbyCategory,
+  getProductByUser,
+  getProductByArchived,
+  archivedDataProduct,
+  activatedDataProduct,
 };

@@ -52,3 +52,18 @@ ALTER TABLE users ADD gender_user VARCHAR(255) DEFAULT NULL;
 ALTER TABLE users ADD date_user DATE DEFAULT NULL;
 ALTER TABLE users ADD store_name VARCHAR(255) DEFAULT NULL;
 ALTER TABLE users ADD store_description VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users ADD address_user VARCHAR(255) DEFAULT NULL;
+ALTER TABLE products ADD user_id VARCHAR REFERENCES users(id_user);
+ALTER TABLE transaction ADD user_id VARCHAR REFERENCES users(id_user);
+ALTER TABLE transaction ADD seller_id VARCHAR REFERENCES users(id_user);
+ALTER TABLE checkout ADD user_id VARCHAR REFERENCES users(id_user);
+ALTER TABLE checkout ADD seller_id VARCHAR REFERENCES users(id_user);
+ALTER TABLE checkout ADD product_id INT REFERENCES products(id_product);
+ALTER TABLE checkout ADD status_id INT REFERENCES status(id_status);
+CREATE TABLE checkout(
+    id_checkout SERIAL PRIMARY KEY,
+    transaction_id INT REFERENCES transaction(id_transaction));
+    SELECT checkout.id_checkout,checkout.transaction_id,checkout.user_id,checkout.seller_id,checkout.product_id,checkout.status_id,transaction.qty_transaction,transaction.total_transaction,user.fullname_user,user.address_user,products.name_product FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN user ON checkout.user_id=user.id_user INNER JOIN products ON checkout.product_id=products.id_product
+
+    SELECT transaction.*,products.name_product,products.brand_product,products.price_product,products.photo_product FROM transaction INNER JOIN products ON transaction.product_id=products.id_product
+    SELECT transaction.id_transaction,transaction.product_id,transaction.qty_transaction,transaction.total_transaction,transaction.user_id,transaction.seller_id,products.name_product,products.photo_product,products.brand_product,products.price_product FROM transaction INNER JOIN products ON transaction.product_id=products.id_product WHERE user_id = '${user_id}'

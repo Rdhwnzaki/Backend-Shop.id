@@ -81,6 +81,34 @@ const updateProfile = ({
       }
     )
   );
+
+const updatePhoto = (id_user, data) => {
+  const { photo_user } = data;
+  return Pool.query(
+    `UPDATE users SET photo_user='${photo_user}' WHERE id_user='${id_user}'`
+  );
+};
+const updateProfileSeller = ({
+  id_user,
+  store_name,
+  email_user,
+  phone_user,
+  store_description,
+}) =>
+  new Promise((resolve, reject) =>
+    Pool.query(
+      `UPDATE users SET store_name = COALESCE($2, store_name), email_user = COALESCE($3, email_user), phone_user = COALESCE($4, phone_user),
+      store_description = COALESCE($5, store_description) WHERE id_user = $1`,
+      [id_user, store_name, email_user, phone_user, store_description],
+      (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      }
+    )
+  );
 module.exports = {
   create,
   findEmail,
@@ -88,4 +116,6 @@ module.exports = {
   findUsers,
   getUserById,
   updateProfile,
+  updatePhoto,
+  updateProfileSeller,
 };

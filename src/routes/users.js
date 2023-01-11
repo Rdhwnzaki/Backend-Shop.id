@@ -6,6 +6,7 @@ const { validate } = require("../helpers/users");
 const { role } = require("../middleware/auth");
 const { protect } = require("../middleware/auth");
 const upload = require("../middleware/upload");
+const upuser = require("../middleware/upuser");
 
 router.post("/register/:role_user", validate, userController.insertUsers);
 router.post("/refresh", userController.refresh);
@@ -17,6 +18,13 @@ router.put(
   protect,
   upload.single("photo_user"),
   userController.editProfile
+);
+router.put("/edit-photo", protect, upuser, userController.putPhoto);
+router.put(
+  "/edit-profile-seller",
+  protect,
+  upload.single("photo_user"),
+  userController.editProfileSeller
 );
 
 module.exports = router;

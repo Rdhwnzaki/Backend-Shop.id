@@ -6,22 +6,27 @@ const { productsController } = require("../controller/products");
 const { protect } = require("../middleware/auth");
 const upload = require("../middleware/upload");
 // const { hitCache, clearCache } = require("../middleware/redis");
+const upuser = require("../middleware/upuser");
 
 router
   .get("/", productsController.getProducts)
   .get("/detail/:id_product", productsController.getProductsDetail)
   .get("/category/:category_id", productsController.getProductsByCategory)
+  .get(`/product-user`, protect, productsController.getProductUser)
+  .get(`/product-archived`, protect, productsController.getProductArchived)
+  .put(`/set-archived/:id_product`, productsController.setProductArchived)
+  .put(`/set-activated/:id_product`, productsController.setProductActivated)
   .post(
-    "/",
+    "/post-product",
     // validateRole,
-    // protect,
-    upload.single("photo_product"),
+    protect,
+    upuser,
     productsController.insertProduct
   )
   .put(
     "/:id_product",
-    // protect,
-    upload.single("photo_product"),
+    protect,
+    upuser,
 
     productsController.updateProduct
   )

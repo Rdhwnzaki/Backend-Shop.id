@@ -1,7 +1,6 @@
 const modelCategory = require("../model/category");
 const { response } = require("../middleware/common");
 const { resp } = require("../middleware/common");
-const cloudinary = require("../config/photo");
 
 const categoryController = {
   updateCategory: async (req, res) => {

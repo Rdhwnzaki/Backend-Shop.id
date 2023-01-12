@@ -13,10 +13,6 @@ const { generateToken, generateRefreshToken } = require("../helpers/auth");
 const email = require("../middleware/email");
 const modelUsers = require("../model/users");
 
-const Port = process.env.PORT;
-const Host = process.env.HOST;
-const cloudinary = require("../config/photo");
-
 const userController = {
   insertUsers: async (req, res) => {
     const {

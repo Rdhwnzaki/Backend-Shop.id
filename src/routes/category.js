@@ -2,7 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 const { categoryController } = require("../controller/category");
-const { validate } = require("../helpers/category");
 const { protect } = require("../middleware/auth");
 const upload = require("../middleware/upload");
 const upuser = require("../middleware/upuser");

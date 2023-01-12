@@ -2,7 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 const { transactionController } = require("../controller/transaction");
-const { validate } = require("../helpers/transaction");
 const { protect } = require("../middleware/auth");
 
 router

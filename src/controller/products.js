@@ -2,7 +2,6 @@
 const modelProduct = require("../model/products");
 const { response } = require("../middleware/common");
 const { resp } = require("../middleware/common");
-const cloudinary = require("../config/photo");
 
 const productsController = {
   updateProduct: async (req, res) => {
@@ -70,12 +69,6 @@ const productsController = {
       req.body.stock_product = parseInt(req.body.stock_product);
       req.body.price_product = parseInt(req.body.price_product);
       req.body.category_id = parseInt(req.body.category_id);
-
-      // const image = await cloudinary.uploader.upload(req.file.path, {
-      //   folder: "shop.id",
-      // });
-
-      // req.body.photo_product = image.url;
       const {
         photo_product: [photo_product],
       } = req.files;

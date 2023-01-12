@@ -17,15 +17,59 @@ const checkoutController = {
       return response(res, 404, false, err, "Input checkout fail");
     }
   },
-  getCheckout: async (req, res) => {
+  putStatus: async (req, res) => {
     try {
       const user_id = req.payload.id_user;
       console.log(user_id);
-      const result = await modelCheckout.selectCheckout(user_id);
+      const { id_checkout, status_id } = req.body;
+      const data = {
+        id_checkout,
+        status_id,
+      };
+      console.log(data);
+      const { rows } = await modelCheckout.putStatusCheckout(data);
+      return response(res, 200, true, rows, "Put status checkout success");
+    } catch (err) {
+      console.log(err);
+      response(res, 404, false, err, "Put status checkout fail");
+    }
+  },
+  getCheckout: async (req, res) => {
+    const search = req.query.search || "";
+    try {
+      const user_id = req.payload.id_user;
+      console.log(user_id);
+      const result = await modelCheckout.selectCheckout(user_id, search);
       response(res, 200, true, result.rows, "Get checkout success");
     } catch (err) {
       console.log(err);
       response(res, 404, false, err, "Get checkout fail");
+    }
+  },
+  getCheckoutDone: async (req, res) => {
+    const search = req.query.search || "";
+    try {
+      const user_id = req.payload.id_user;
+      console.log(user_id);
+      const result = await modelCheckout.selectCheckoutDone(user_id, search);
+      response(res, 200, true, result.rows, "Get checkout success");
+    } catch (err) {
+      console.log(err);
+      response(res, 404, false, err, "Get checkout fail");
+    }
+  },
+  getCheckoutDetail: async (req, res) => {
+    try {
+      const user_id = req.payload.id_user;
+      console.log(user_id);
+      const result = await modelCheckout.selectDataCheckoutbyId(
+        user_id,
+        req.params.id_checkout
+      );
+      response(res, 200, true, result.rows, "get checkout success");
+    } catch (error) {
+      console.log(error);
+      response(res, 404, false, "get checkout failed");
     }
   },
   getCheckoutSeller: async (req, res) => {

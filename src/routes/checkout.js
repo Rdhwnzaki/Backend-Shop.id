@@ -12,6 +12,13 @@ router
     protect,
     checkoutController.getCheckoutDelivered
   )
-  .get("/get-checkout-seller", protect, checkoutController.getCheckoutSeller);
+  .get("/get-checkout-seller", protect, checkoutController.getCheckoutSeller)
+  .get("/get-checkout-done", protect, checkoutController.getCheckoutDone)
+  .get(
+    "/get-checkout-detail/:id_checkout",
+    protect,
+    checkoutController.getCheckoutDetail
+  )
+  .put("/put-checkout", protect, checkoutController.putStatus);
 
 module.exports = router;

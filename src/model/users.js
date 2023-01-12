@@ -66,12 +66,21 @@ const updateProfile = ({
   phone_user,
   gender_user,
   date_user,
+  address_user,
 }) =>
   new Promise((resolve, reject) =>
     Pool.query(
       `UPDATE users SET fullname_user = COALESCE($2, fullname_user), email_user = COALESCE($3, email_user), phone_user = COALESCE($4, phone_user),
-      gender_user = COALESCE($5, gender_user),date_user = COALESCE($6, date_user) WHERE id_user = $1`,
-      [id_user, fullname_user, email_user, phone_user, gender_user, date_user],
+      gender_user = COALESCE($5, gender_user),date_user = COALESCE($6, date_user),address_user = COALESCE($7, address_user) WHERE id_user = $1`,
+      [
+        id_user,
+        fullname_user,
+        email_user,
+        phone_user,
+        gender_user,
+        date_user,
+        address_user,
+      ],
       (err, result) => {
         if (!err) {
           resolve(result);

@@ -44,6 +44,7 @@ const transactionController = {
       const user_id = req.payload.id_user;
       console.log("id user", user_id);
 
+      req.body.status = parseInt(req.body.status);
       req.body.product_id = parseInt(req.body.product_id);
       req.body.qty_transaction = parseInt(req.body.qty_transaction);
       req.body.total_transaction = parseInt(req.body.total_transaction);

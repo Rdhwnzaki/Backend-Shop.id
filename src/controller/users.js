@@ -145,8 +145,14 @@ const userController = {
   },
   editProfile: async (req, res) => {
     try {
-      const { fullname_user, email_user, phone_user, gender_user, date_user } =
-        req.body;
+      const {
+        fullname_user,
+        email_user,
+        phone_user,
+        gender_user,
+        date_user,
+        address_user,
+      } = req.body;
       const { id_user } = req.payload;
       console.log(id_user);
 
@@ -164,6 +170,7 @@ const userController = {
           phone_user: phone_user || null,
           gender_user: gender_user || null,
           date_user: date_user || null,
+          address_user: address_user || null,
         };
 
         await updateProfile(dataProfile);

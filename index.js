@@ -12,7 +12,12 @@ const { resp } = require("./src/middleware/common");
 const app = express();
 const port = 3000;
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3001",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(
   helmet({

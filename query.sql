@@ -16,7 +16,7 @@ CREATE TABLE transaction(
     email_transaction VARCHAR NOT NULL,
     product_id INT REFERENCES products(id_product),
     amount_transaction INT NOT NULL,
-    total_transaction INT NOT NULL,
+    total_transaction INT NOT NULL
 );
 
 INSERT INTO category(id_category,name_category) VALUES(1, 'T-Shirt'),(2, 'Shorts'),(3, 'Jacket'),(4, 'Pants');
@@ -46,6 +46,7 @@ CREATE TABLE status(
     id_status SERIAL PRIMARY KEY,
     name_status VARCHAR NOT NULL
 );
+ALTER TABLE category ADD photo_category VARCHAR(255) DEFAULT NULL;
 ALTER TABLE users ADD photo_user VARCHAR(255) DEFAULT NULL;
 ALTER TABLE users ADD phone_user INT DEFAULT NULL;
 ALTER TABLE users ADD gender_user VARCHAR(255) DEFAULT NULL;

@@ -19,6 +19,7 @@ router
     protect,
     checkoutController.getCheckoutDetail
   )
+  .put("/put-checkout-id/:id_checkout", checkoutController.putStatusId)
   .put("/put-checkout", protect, checkoutController.putStatus);
 
 module.exports = router;

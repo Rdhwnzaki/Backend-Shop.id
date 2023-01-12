@@ -18,18 +18,18 @@ const selectCheckoutDone = (user_id, search) =>
     `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,products.photo_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.user_id='${user_id}' AND checkout.status_id=1 AND (name_product) ilike '%${search}%'`
   );
 
-const selectCheckoutSeller = (user_id) =>
+const selectCheckoutSeller = (user_id, search) =>
   Pool.query(
-    `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.seller_id='${user_id}' AND checkout.status_id=0`
+    `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.seller_id='${user_id}' AND checkout.status_id=0 AND (name_product) ilike '%${search}%'`
   );
 
-const selectCheckoutDelivered = (user_id) =>
+const selectCheckoutDelivered = (user_id, search) =>
   Pool.query(
-    `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.seller_id='${user_id}' AND checkout.status_id=1`
+    `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.seller_id='${user_id}' AND checkout.status_id=1 AND (name_product) ilike '%${search}%'`
   );
 const putStatusCheckout = (data) =>
   new Promise((resolve, reject) => {
-    const { id_checkout, status_id } = data;
+    const { id_checkout } = data;
     Pool.query(
       `UPDATE checkout SET status_id=1 WHERE id_checkout=${id_checkout}`,
       (err, result) => {
@@ -42,10 +42,24 @@ const putStatusCheckout = (data) =>
     );
   });
 
-const selectDataCheckoutbyId = (user_id, id_checkout) =>
+const putStatusCheckoutId = (id_checkout) =>
   new Promise((resolve, reject) => {
     Pool.query(
-      `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,products.photo_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.user_id='${user_id}' AND checkout.id_checkout=${id_checkout} `,
+      `UPDATE checkout SET status_id=1 WHERE id_checkout=${id_checkout}`,
+      (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      }
+    );
+  });
+
+const selectDataCheckoutbyId = (id_checkout) =>
+  new Promise((resolve, reject) => {
+    Pool.query(
+      `SELECT checkout.*,transaction.qty_transaction,transaction.total_transaction,products.name_product,products.price_product,products.photo_product,status.name_status,users.fullname_user,users.address_user FROM checkout INNER JOIN transaction ON checkout.transaction_id=transaction.id_transaction INNER JOIN products ON checkout.product_id=products.id_product INNER JOIN status ON checkout.status_id=status.id_status INNER JOIN users ON checkout.user_id=users.id_user WHERE checkout.id_checkout=${id_checkout} `,
       (err, res) => {
         if (err) {
           reject(err);
@@ -63,4 +77,5 @@ module.exports = {
   putStatusCheckout,
   selectCheckoutDone,
   selectDataCheckoutbyId,
+  putStatusCheckoutId,
 };

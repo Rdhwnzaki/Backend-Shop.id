@@ -21,13 +21,23 @@ const checkoutController = {
     try {
       const user_id = req.payload.id_user;
       console.log(user_id);
-      const { id_checkout, status_id } = req.body;
+      const { id_checkout } = req.body;
       const data = {
         id_checkout,
-        status_id,
       };
       console.log(data);
       const { rows } = await modelCheckout.putStatusCheckout(data);
+      return response(res, 200, true, rows, "Put status checkout success");
+    } catch (err) {
+      console.log(err);
+      response(res, 404, false, err, "Put status checkout fail");
+    }
+  },
+  putStatusId: async (req, res) => {
+    try {
+      const { rows } = await modelCheckout.putStatusCheckoutId(
+        req.params.id_checkout
+      );
       return response(res, 200, true, rows, "Put status checkout success");
     } catch (err) {
       console.log(err);
@@ -60,10 +70,7 @@ const checkoutController = {
   },
   getCheckoutDetail: async (req, res) => {
     try {
-      const user_id = req.payload.id_user;
-      console.log(user_id);
       const result = await modelCheckout.selectDataCheckoutbyId(
-        user_id,
         req.params.id_checkout
       );
       response(res, 200, true, result.rows, "get checkout success");
@@ -73,10 +80,11 @@ const checkoutController = {
     }
   },
   getCheckoutSeller: async (req, res) => {
+    const search = req.query.search || "";
     try {
       const user_id = req.payload.id_user;
       console.log(user_id);
-      const result = await modelCheckout.selectCheckoutSeller(user_id);
+      const result = await modelCheckout.selectCheckoutSeller(user_id, search);
       response(res, 200, true, result.rows, "Get checkout success");
     } catch (err) {
       console.log(err);
@@ -84,10 +92,14 @@ const checkoutController = {
     }
   },
   getCheckoutDelivered: async (req, res) => {
+    const search = req.query.search || "";
     try {
       const user_id = req.payload.id_user;
       console.log(user_id);
-      const result = await modelCheckout.selectCheckoutDelivered(user_id);
+      const result = await modelCheckout.selectCheckoutDelivered(
+        user_id,
+        search
+      );
       response(res, 200, true, result.rows, "Get checkout success");
     } catch (err) {
       console.log(err);

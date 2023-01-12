@@ -88,7 +88,7 @@ const getProductByUser = (user_id, page, limit, sort, sortby, search) =>
       `select products.id_product,products.name_product,products.stock_product,products.price_product,products.brand_product,products.description_product,category.name_category as category,products.photo_product
       FROM products
       INNER JOIN category
-      ON products.category_id = category.id_category WHERE user_id = '${user_id}'AND archived=0 AND status AND (name_product) ilike '%${search}%' order by ${sortby} ${sort} limit ${limit} offset ${offset}`,
+      ON products.category_id = category.id_category WHERE user_id = '${user_id}'AND archived=0 AND (name_product) ilike '%${search}%' order by ${sortby} ${sort} limit ${limit} offset ${offset}`,
       (err, res) => {
         if (err) {
           reject(err);

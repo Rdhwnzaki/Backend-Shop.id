@@ -13,7 +13,7 @@ const app = express();
 const port = 3000;
 
 const corsOptions = {
-  origin: "https://warm-salamander-212510.netlify.app",
+  origin: "https://shopid-rdhwnzaki.netlify.app",
   credentials: true,
   optionSuccessStatus: 200,
 };

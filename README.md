@@ -1,7 +1,4 @@
-
 # Shop.id - Backend
-
-
 
 ## Run Locally
 
@@ -29,7 +26,6 @@ Start the server
   npm run dev
 ```
 
-
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
@@ -37,9 +33,9 @@ Start the server
 
 ```body
 DB_USER=
-DB_HOST= 
+DB_HOST=
 DB_NAME=
-DB_PASS= 
+DB_PASS=
 DB_PORT=
 
 JWT_KEY=
@@ -55,12 +51,12 @@ OAUTH_CLIENT_SECRET=
 OAUTH_REFRESH_TOKEN=
 ```
 
-
 ## API Reference
+
 ### API Deploy
 
 ```http
-  https://zany-gold-puppy-tutu.cyclic.app
+  https://real-pear-fossa-shoe.cyclic.app
 ```
 
 ### Users
@@ -70,6 +66,7 @@ OAUTH_REFRESH_TOKEN=
 ```http
   POST /users/login
 ```
+
 #### Body
 
 ```body
@@ -93,6 +90,7 @@ OAUTH_REFRESH_TOKEN=
     }
 }
 ```
+
 #### Register
 
 ```http
@@ -111,6 +109,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "register success please check your email"
   }
 ```
+
 #### Verification
 
 ```http
@@ -125,6 +124,7 @@ OAUTH_REFRESH_TOKEN=
     "otp":"569255"
 }
 ```
+
 #### Profile
 
 ```http
@@ -158,6 +158,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Success Get User By Token"
   }
 ```
+
 #### Photo Profile
 
 ```http
@@ -176,6 +177,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Update Photo Success"
   }
 ```
+
 ### Products
 
 #### All Products
@@ -183,6 +185,7 @@ OAUTH_REFRESH_TOKEN=
 ```http
   GET /products
 ```
+
 #### Body
 
 ```body
@@ -294,6 +297,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get product success"
 }
 ```
+
 #### Product Detail
 
 ```http
@@ -322,6 +326,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "get product success"
 }
 ```
+
 #### Product By Category
 
 ```http
@@ -369,6 +374,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "get product by category success"
 }
 ```
+
 #### Product By User
 
 ```http
@@ -486,6 +492,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Success Get Product By user"
 }
 ```
+
 #### Product Archived
 
 ```http
@@ -553,6 +560,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Success Get Product By user"
 }
 ```
+
 #### Post Product
 
 ```http
@@ -577,6 +585,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Input Data Success"
 }
 ```
+
 #### PUT Product
 
 ```http
@@ -601,6 +610,7 @@ OAUTH_REFRESH_TOKEN=
     "message": "Input Data Success"
 }
 ```
+
 #### DELETE Product
 
 ```http
@@ -620,9 +630,11 @@ OAUTH_REFRESH_TOKEN=
 ### Status
 
 #### POST Status
+
 ```http
   POST /status/add-status
 ```
+
 #### Body
 
 ```body
@@ -631,12 +643,15 @@ OAUTH_REFRESH_TOKEN=
     "name_status":"Paid"
 }
 ```
+
 ### Category
 
 #### GET Category
+
 ```http
   GET /category
 ```
+
 #### Body
 
 ```body
@@ -673,10 +688,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get category success"
 }
 ```
+
 #### POST Category
+
 ```http
   POST /category/post-category
 ```
+
 #### Body
 
 ```body
@@ -690,10 +708,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Input Data Success"
 }
 ```
+
 #### PUT Category
+
 ```http
   PUT /category/edit/:id_category
 ```
+
 #### Body
 
 ```body
@@ -707,10 +728,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Input Data Success"
 }
 ```
+
 #### DELETE Category
+
 ```http
   DELETE /category/delete/:id_category
 ```
+
 #### Body
 
 ```body
@@ -720,11 +744,15 @@ OAUTH_REFRESH_TOKEN=
     "message": "Delete category success"
 }
 ```
+
 ### Transaction
+
 #### GET Transaction
+
 ```http
   GET /transaction/get-transaction
 ```
+
 #### Body
 
 ```body
@@ -735,10 +763,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get transaction success"
 }
 ```
+
 #### POST Transaction
+
 ```http
   POST /transaction/post-transaction
 ```
+
 #### Body
 
 ```body
@@ -749,11 +780,15 @@ OAUTH_REFRESH_TOKEN=
     "seller_id":"9304ed81-9988-49fd-a715-90ef3c7ec235"
 }
 ```
+
 ### Checkout
+
 #### GET Checkout
+
 ```http
   GET /checkout/get-checkout
 ```
+
 #### Body
 
 ```body
@@ -764,10 +799,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get checkout success"
 }
 ```
+
 #### GET Checkout Seller
+
 ```http
   GET /checkout/get-checkout-seller
 ```
+
 #### Body
 
 ```body
@@ -778,10 +816,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get checkout success"
 }
 ```
+
 #### GET Checkout Delivered
+
 ```http
   GET /checkout/get-checkout-delivered
 ```
+
 #### Body
 
 ```body
@@ -1048,10 +1089,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get checkout success"
 }
 ```
+
 #### GET Checkout Done
+
 ```http
   GET /checkout/get-checkout-done
 ```
+
 #### Body
 
 ```body
@@ -1335,10 +1379,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "Get checkout success"
 }
 ```
+
 #### GET Checkout Detail
+
 ```http
   GET /checkout/get-checkout-detail/:id_checkout
 ```
+
 #### Body
 
 ```body
@@ -1366,10 +1413,13 @@ OAUTH_REFRESH_TOKEN=
     "message": "get checkout success"
 }
 ```
-#### POST Checkout 
+
+#### POST Checkout
+
 ```http
   POST /post-checkout
 ```
+
 #### Body
 
 ```body
@@ -1379,10 +1429,13 @@ OAUTH_REFRESH_TOKEN=
     "product_id":63
 }
 ```
-#### PUT Checkout 
+
+#### PUT Checkout
+
 ```http
   PUT /checkout/put-checkout
 ```
+
 #### Body
 
 ```body
@@ -1390,10 +1443,13 @@ OAUTH_REFRESH_TOKEN=
     "id_checkout":18
 }
 ```
+
 #### PUT Checkout By Params
+
 ```http
   PUT /checkout/put-checkout-id/:id_checkout
 ```
+
 #### Body
 
 ```body
